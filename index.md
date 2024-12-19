@@ -30,13 +30,13 @@ The program:
 
 2. Categorizes files based on their extensions into predefined categories:
 
-    * Documents: Includes formats like pdf, doc, docx, txt, xls, xlsx, etc.
+    * **Documents:** Includes formats like pdf, doc, docx, txt, xls, xlsx, etc.
 
-    * Images: Handles formats such as jpg, png, gif, svg, raw, etc.
+    * **Images:** Handles formats such as jpg, png, gif, svg, raw, etc.
 
-    * Videos: Supports popular video formats like mp4, avi, mkv, mov, etc.
+    * **Videos:** Supports popular video formats like mp4, avi, mkv, mov, etc.
 
-    * Music: Organizes audio files like mp3, wav, aac, flac, etc.
+    * **Music:** Organizes audio files like mp3, wav, aac, flac, etc.
 
 3. Moves files to corresponding folders named after their categories (e.g., Documents, Images).
 
