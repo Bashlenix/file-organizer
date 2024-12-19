@@ -2,122 +2,112 @@
 layout: default
 ---
 
-Text can be **bold**, _italic_, or ~~strikethrough~~.
+# Problem the Program Solves
 
-[Link to another page](./another-page.html).
+In today's digital age, files can accumulate quickly, creating cluttered directories that are difficult to manage. Users often store documents, images, music, and videos in a single folder without organization. Over time, this can lead to frustration when searching for specific files or when maintaining a clean workspace.
 
-There should be whitespace between paragraphs.
-
-There should be whitespace between paragraphs. We recommend including a README, or a file with information about your project.
-
-# Header 1
-
-This is a normal paragraph following a header. GitHub is a code hosting platform for version control and collaboration. It lets you and others work together on projects from anywhere.
-
-## Header 2
-
-> This is a blockquote following a header.
->
-> When something is important enough, you do it even if the odds are not in your favor.
-
-### Header 3
-
-```js
-// Javascript code with syntax highlighting.
-var fun = function lang(l) {
-  dateformat.i18n = require('./lang/' + l)
-  return true;
-}
-```
-
-```ruby
-# Ruby code with syntax highlighting
-GitHubPages::Dependencies.gems.each do |gem, version|
-  s.add_dependency(gem, "= #{version}")
-end
-```
-
-#### Header 4
-
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
-
-##### Header 5
-
-1.  This is an ordered list following a header.
-2.  This is an ordered list following a header.
-3.  This is an ordered list following a header.
-
-###### Header 6
-
-| head1        | head two          | three |
-|:-------------|:------------------|:------|
-| ok           | good swedish fish | nice  |
-| out of stock | good and plenty   | nice  |
-| ok           | good `oreos`      | hmm   |
-| ok           | good `zoute` drop | yumm  |
-
-### There's a horizontal rule below this.
+The File Organizer program addresses this issue **by automatically sorting and categorizing files into appropriate folders based on their file extensions**. This eliminates the need for manual sorting, saves time, and ensures that files are easy to find and manage.
 
 * * *
 
-### Here is an unordered list:
+## Target Audience
 
-*   Item foo
-*   Item bar
-*   Item baz
-*   Item zip
+The program is designed for a broad range of users, including:
 
-### And an ordered list:
+**Students and Professionals:** Individuals who frequently download and manage a mix of documents, presentations, images, and other files.
 
-1.  Item one
-1.  Item two
-1.  Item three
-1.  Item four
+**Content Creators:** Photographers, videographers, and graphic designers who deal with large numbers of media files.
 
-### And a nested list:
+**Casual Users:** Anyone who wants a cleaner and more organized file system without the hassle of manually sorting files.
 
-- level 1 item
-  - level 2 item
-  - level 2 item
-    - level 3 item
-    - level 3 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-- level 1 item
+**Developers and IT Administrators:** People who need a quick way to categorize and organize various file types in their directories for better project management.
 
-### Small image
+## What the Program Does
 
-![Octocat](https://github.githubassets.com/images/icons/emoji/octocat.png)
+The program:
 
-### Large image
+1. Scans a given directory for files.
 
-![Branching](https://guides.github.com/activities/hello-world/branching.png)
+2. Categorizes files based on their extensions into predefined categories:
 
+    * Documents: Includes formats like pdf, doc, docx, txt, xls, xlsx, etc.
 
-### Definition lists can be used with HTML syntax.
+    * Images: Handles formats such as jpg, png, gif, svg, raw, etc.
 
-<dl>
-<dt>Name</dt>
-<dd>Godzilla</dd>
-<dt>Born</dt>
-<dd>1952</dd>
-<dt>Birthplace</dt>
-<dd>Japan</dd>
-<dt>Color</dt>
-<dd>Green</dd>
-</dl>
+    * Videos: Supports popular video formats like mp4, avi, mkv, mov, etc.
 
+    * Music: Organizes audio files like mp3, wav, aac, flac, etc.
+
+3. Moves files to corresponding folders named after their categories (e.g., Documents, Images).
+
+4. Moves unsupported or unrecognized files to an Others folder to ensure no file is left behind.
+
+5. Optionally processes subdirectories recursively if the user enables the recursive mode using the <span style="color:red">-r</span> flag.
+
+## Supported File Types
+
+The program categorizes files into the following groups and supports these extensions:
+
+| **Category**   | **Supported Extensions**                                                                                                    |
+|-----------------|---------------------------------------------------------------------------------------------------------------------------|
+| **Documents**   | pdf, doc, docx, txt, rtf, xls, xlsx, csv, ppt, pptx                                                                       |
+| **Images**      | jpg, jpeg, png, gif, tiff, svg, eps, ai, webp, cr2, nef, arw, dng                                                         |
+| **Videos**      | mp4, mkv, avi, mov, wmv, webm, flv, mpeg, mpg, m2ts, mts                                                                  |
+| **Music**       | mp3, wav, aiff, pcm, aac, ogg, wma, flac, alac, midi, mid, m4a, amr                                                       |
+| **Others**      | Files that do not match the extensions above are categorized under the **Others** folder.                                |
+
+## How It Works
+
+1. **User Input:** The user specifies the directory they want to organize and optionally enables recursive mode with the <span style="color:red">-r</span> flag.
+
+1. **Directory Scanning:** The program scans the directory for files using Rust’s filesystem utilities and processes files one by one.
+
+1. **File Categorization:** Each file is checked against predefined extension lists for categorization.
+
+1. **Folder Creation:** If a folder for a specific category (<span style="color:#cccc00">e.g.,</span> Images) doesn’t exist, the program creates it.
+
+1. **File Moving:** The program moves the file into the appropriate folder. If no match is found, the file is placed in an Others folder.
+
+1. **Recursive Option:** If recursive mode is enabled, the program processes files in all subdirectories as well.
+
+## Command-Line Interface
+
+The program uses a simple and intuitive command-line interface powered by the clap crate. Users can interact with it as follows:
+
+* Organize files in a directory:
+ ```rust
+file_organizer ./test
 ```
-Long, single-line code blocks should not wrap. They should horizontally scroll if they are too long. This line should be long enough to demonstrate this.
+
+* Enable recursive processing:
+```rust
+file_organizer ./test -r
 ```
 
+Users can also view the help message for details:
+```rust
+file_organizer --help
 ```
-The final element.
-```
+
+## Technical Highlights
+
+* **Rust’s Performance:** The program leverages Rust’s performance and safety guarantees for efficient file operations.
+
+* **Clap for Parsing:** The use of clap::Parser makes the command-line interface intuitive and powerful.
+
+* **Extensibility:** The program’s modular design allows users to add more categories or file extensions with minimal effort.
+
+* **Error Handling:** Includes basic error handling to ensure the program doesn’t crash due to invalid inputs or missing directories.
+
+
+## Potential Use Cases
+
+* **Project Management:** Developers organizing project files by type.
+
+* **Media Sorting:** Photographers or videographers sorting raw files into folders.
+
+* **Personal Use:** Cleaning up download folders or desktop clutter.
+
+* **IT Maintenance:** Automating folder structure creation for shared drives.
+
+<!-- ![Octocat](https://github.githubassets.com/images/icons/emoji/octocat.png) -->
