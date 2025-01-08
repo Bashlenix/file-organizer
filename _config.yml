@@ -4,5 +4,5 @@ show_downloads: true
 google_analytics:
 theme: jekyll-theme-cayman
 
- github:
+github:
   zip_url: https://github.com/Bashlenix/file-organizer/zipball/master/code
