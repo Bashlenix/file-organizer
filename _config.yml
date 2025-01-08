@@ -3,3 +3,7 @@ description: Making chaos a thing of the past!
 show_downloads: true
 google_analytics:
 theme: jekyll-theme-cayman
+
+ github:
+   zip_url: http://example.com/download.zip
+   another_url: another value
