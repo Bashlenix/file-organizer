@@ -19,11 +19,11 @@
       <h1 class="project-name">{{ site.title | default: site.github.repository_name }}</h1>
       <h2 class="project-tagline">{{ site.description | default: site.github.project_tagline }}</h2>
       {% if site.github.is_project_page %}
-        <a href="{{ https://github.com/Bashlenix/file-organizer/tree/master/code }}" class="btn">View on GitHub</a>
+        <a target="_blank" href="{{ https://github.com/Bashlenix/file-organizer/tree/master/code }}" class="btn">View on GitHub</a>
       {% endif %}
       {% if site.show_downloads %}
-        <a href="https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/Bashlenix/file-organizer/tree/master/code" class="btn">Download</a>
-        <a href="{{ github.tar_url }}" class="btn">Download123 .tar.gz</a>
+        <a href="https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/Bashlenix/file-organizer/tree/master/code" class="btn">Download .zip</a>
+        <!-- <a href="{{ github.tar_url }}" class="btn">Download123 .tar.gz</a> -->
       {% endif %}
     </header>
 
