@@ -1,0 +1,7 @@
+{
+    "Documents": ["pdf", "doc", "docx", "txt", "rtf", "xls", "xlsx", "csv", "ppt", "pptx"],
+    "Images": ["jpg", "jpeg", "png", "gif", "tiff", "svg", "eps", "ai", "webp", "cr2", "nef", "arw", "dng"],
+    "Videos": ["mp4", "mkv", "avi", "mov", "wmv", "webm", "flv", "mpeg", "mpg", "m2ts", "mts"],
+    "Music": ["mp3", "wav", "aiff", "pcm", "aac", "ogg", "wma", "flac", "alac", "midi", "mid", "m4a", "amr"]
+}
+

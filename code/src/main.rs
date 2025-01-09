@@ -1,85 +1,59 @@
-use walkdir::WalkDir;
+use std::env;
+use std::path::Path;
+mod file_organizer;
 use clap::Parser;
-use std::fs;
-use std::path::{Path, PathBuf};
+use file_organizer::FileOrganizer;
 
-/// Organizes files in a directory into categorized folders.
+/// Command-line arguments for the file organizer.
 #[derive(Parser, Debug)]
-#[command(author, version, about, long_about = None)]
+#[command(
+    author = "Muhammad Otah Bashi",
+    version = "1.0",
+    about = "Organizes files in a directory into categorized folders",
+    long_about = "This tool helps you organize files in a directory by categorizing them into folders based on file extensions. You can use it recursively to process nested directories.",
+    help_template = "\
+{name} {version}
+{author}
+
+{about}
+
+USAGE:
+    {usage}
+
+ARGS:
+    {all-args}
+
+OPTIONS:
+    -h, --help       Show this help message and exit
+    -r, --recursive  Organize files recursively
+"
+)]
 struct Args {
     /// The source directory to organize
     source_dir: String,
 
     /// Enable recursive organization
-    #[arg(short, long)]
+    #[arg(short, long, help = "Organize files recursively")]
     recursive: bool,
-}
-
-fn organize_files(source_dir: &Path, recursive: bool) {
-    let extensions = vec![
-        ("Documents", vec!["pdf", "doc", "docx", "txt", "rtf", "xls", "xlsx", "csv", "ppt", "pptx"]),
-        ("Images", vec!["jpg", "jpeg", "png", "gif", "tiff", "svg", "eps", "ai", "webp", "cr2", "nef", "arw", "dng"]),
-        ("Videos", vec!["mp4", "mkv", "avi", "mov", "wmv", "webm", "flv", "mpeg", "mpg", "m2ts", "mts"]),
-        ("Music", vec!["mp3", "wav", "aiff", "pcm", "aac", "ogg", "wma", "flac", "alac", "midi", "mid", "m4a", "amr"]),
-    ];
-
-    if !source_dir.is_dir() {
-        eprintln!("Error: '{}' is not a valid directory.", source_dir.display());
-        return;
-    }
-
-    let entries = if recursive {
-        WalkDir::new(source_dir)
-            .into_iter()
-            .filter_map(|e| e.ok())
-            .filter(|e| e.file_type().is_file())
-            .map(|e| e.into_path())
-            .collect::<Vec<PathBuf>>()
-    } else {
-        fs::read_dir(source_dir)
-            .unwrap_or_else(|_| panic!("Cannot read directory: {}", source_dir.display()))
-            .filter_map(|entry| entry.ok())
-            .map(|e| e.path())
-            .collect()
-    };
-
-    for entry in entries {
-        if entry.is_file() {
-            let file_extension = entry.extension()
-                .and_then(|ext| ext.to_str())
-                .unwrap_or("")
-                .to_lowercase();
-
-            let mut moved = false;
-
-            for (category, ext_list) in &extensions {
-                if ext_list.contains(&file_extension.as_str()) {
-                    let category_dir = source_dir.join(category);
-                    if !category_dir.exists() {
-                        fs::create_dir_all(&category_dir).unwrap();
-                    }
-                    fs::rename(&entry, category_dir.join(entry.file_name().unwrap())).unwrap();
-                    moved = true;
-                    break;
-                }
-            }
-
-            if !moved {
-                let other_dir = source_dir.join("Others");
-                if !other_dir.exists() {
-                    fs::create_dir_all(&other_dir).unwrap();
-                }
-                fs::rename(&entry, other_dir.join(entry.file_name().unwrap())).unwrap();
-            }
-        }
-    }
-
-    println!("Files organized in '{}'.", source_dir.display());
 }
 
 fn main() {
     let args = Args::parse();
     let source_dir = Path::new(&args.source_dir);
-    organize_files(source_dir, args.recursive);
-}
 
+    // Get the path to the config file relative to the current working directory
+    let config_file = env::current_dir()
+        .expect("Failed to get current directory")
+        .join("extensions.json");
+
+    if !config_file.exists() {
+        eprintln!(
+            "Error: Configuration file '{}' not found.",
+            config_file.display()
+        );
+        return;
+    }
+
+    let organizer = FileOrganizer::new(source_dir.to_path_buf(), args.recursive, &config_file);
+    organizer.organize();
+}
