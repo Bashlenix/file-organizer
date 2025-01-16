@@ -3,14 +3,14 @@ name: Rust Build and Cross-Compilation
 on:
   push:
     branches:
-      - master  # Or any branch you want to trigger the build from
+      - master
   pull_request:
     branches:
-      - master  # Trigger on pull requests to the main branch
+      - master
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # GitHub Actions default runner (Ubuntu Linux)
+    runs-on: ubuntu-latest  # GitHub Actions runner (Ubuntu Linux)
 
     steps:
     - name: Checkout repository
@@ -19,25 +19,32 @@ jobs:
     - name: Set up Rust
       uses: actions-rs/toolchain@v1
       with:
-        toolchain: stable  # Specify the Rust toolchain version
-        components: rustfmt, clippy  # Optional components for Rust development
+        toolchain: stable
+        components: rustfmt, clippy
 
     - name: Install dependencies for cross-compilation
       run: |
         sudo apt update
-        sudo apt install -y libssl-dev pkg-config zlib1g-dev
+        sudo apt install -y libssl-dev pkg-config zlib1g-dev build-essential curl
 
-    - name: Add macOS target for cross-compilation
+    - name: Install osxcross
       run: |
-        rustup target add aarch64-apple-darwin  # Add macOS (Apple Silicon) target
+        curl -LO https://github.com/tpoechtrager/osxcross/releases/download/v0.1/osxcross-x86_64-linux-gnu.tar.gz
+        tar -xvf osxcross-x86_64-linux-gnu.tar.gz
+        export PATH=$PATH:$PWD/osxcross-x86_64-linux-gnu/bin
 
-    - name: Build the project for macOS
+    - name: Set up macOS target
       run: |
-        cd code  # Ensure you're in the correct folder
-        cargo build --target aarch64-apple-darwin --release --verbose  # Cross-compile for macOS
+        rustup target add aarch64-apple-darwin
+        rustup component add rust-src
+
+    - name: Build for macOS
+      run: |
+        cd code  # Navigate to your code folder
+        cargo build --target aarch64-apple-darwin --release --verbose
 
     - name: Upload Release Artifacts
-      uses: actions/upload-artifact@v3  # Updated to the latest version
+      uses: actions/upload-artifact@v3
       with:
         name: macos-release
-        path: code/target/aarch64-apple-darwin/release/  # Path to the compiled release binary
+        path: code/target/aarch64-apple-darwin/release/
