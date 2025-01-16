@@ -28,7 +28,7 @@ jobs:
         cargo build --release  # Build the project
 
     - name: Set up cross-compilation for macOS (aarch64)
-      uses: cross-rs/cross@v0.2
+      uses: cross-rs/cross@v0.3
       with:
         target: aarch64-apple-darwin  # Specify the target platform for macOS (Apple Silicon)
     
@@ -38,7 +38,7 @@ jobs:
         cross build --target aarch64-apple-darwin --release --verbose  # Cross-compile for macOS
 
     - name: Upload Release Artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: macos-release
         path: code/target/aarch64-apple-darwin/release/  # Path to the compiled release binary
