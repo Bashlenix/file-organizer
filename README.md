@@ -49,7 +49,7 @@ The program:
 
 ## Supported File Types
 
-The program categorizes files based on the extensions listed in the extensions.json file. Below are some default categories:
+The program categorizes files based on the extensions listed in the <span style="color:red">extensions.json</span> file. Below are some default categories:
 
 | **Category**   | **Supported Extensions**                                                                                                    |
 |-----------------|---------------------------------------------------------------------------------------------------------------------------|
