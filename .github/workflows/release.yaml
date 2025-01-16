@@ -1,67 +1,47 @@
-name: Cargo Release Workflow (macOS Only)
+name: Release Statically Linked Rust Binary
 
 on:
   push:
     tags:
-      - 'v*'
-
-env:
-  CARGO_TERM_COLOR: always
+      - 'v*'  # Trigger on tags like 'v1.0.0'
 
 jobs:
-  test:
-    name: Run Tests
-    runs-on: macOS-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Run Tests
-        working-directory: code
-        run: cargo test --verbose
-
   build:
-    name: Build Project
-    runs-on: macOS-latest
-    needs: test
-    steps:
-      - uses: actions/checkout@v3
-      - name: Build
-        working-directory: code
-        run: cargo build --release --verbose
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: macOS
-          path: code/target/release/
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+          - x86_64-unknown-linux-musl       # Linux (musl)
+          - aarch64-unknown-linux-musl      # ARM Linux (musl)
 
-  release:
-    name: Create Release
-    runs-on: macOS-latest
-    needs: build
-    permissions:
-      contents: write
+    env:
+      BINARY_NAME: file_organizer
+
     steps:
-      - uses: actions/checkout@v3
-      - name: Download Artifacts
-        uses: actions/download-artifact@v3
-      - name: Set Build File Variables
-        id: vars
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install Cross
+        run: cargo install cross
+
+      - name: Build with Cross
         run: |
-          name=$(awk -F '= ' '/^\[package\]/{found=1} found && /^name/{gsub(/["]/, "", $2); print $2; exit}' code/Cargo.toml)
-          echo "name=$name" >> $GITHUB_OUTPUT
-          ext=""
-          echo "ext=$ext" >> $GITHUB_OUTPUT
-      - name: Prepare Artifacts
+          cd code
+          cross build --target ${{ matrix.target }} --release --verbose
+
+      - name: Create Release Archive
         run: |
-          source=macOS/${{ steps.vars.outputs.name }}${{ steps.vars.outputs.ext }}
-          target=bin/${{ steps.vars.outputs.name }}-macOS${{ steps.vars.outputs.ext }}
-          mkdir -p bin
-          mv $source $target
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
+          mkdir -p release
+          cp code/target/${{ matrix.target }}/release/$BINARY_NAME release/
+          tar -czvf ${{ matrix.target }}.tar.gz -C release $BINARY_NAME
+
+      - name: Upload Release Assets
+        uses: softprops/action-gh-release@v2
         with:
-          draft: false
-          prerelease: false
-          token: ${{ secrets.GITHUB_TOKEN }}
           files: |
-            bin/${{ steps.vars.outputs.name }}-macOS${{ steps.vars.outputs.ext }}
+            *.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.BASHI }}
