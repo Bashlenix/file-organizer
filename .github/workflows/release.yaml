@@ -3,7 +3,7 @@ name: Release Statically Linked Rust Binary
 on:
   push:
     tags:
-      - 'v*'
+      - 'v*'  # Trigger on tags like 'v1.0.0'
 
 jobs:
   build:
@@ -34,18 +34,16 @@ jobs:
           rustup target add ${{ matrix.target }}
 
       - name: Build with Cross
-        working-directory: code
-        run: cross build --target ${{ matrix.target }} --release --verbose
+        run: cd code
+        cross build --target ${{ matrix.target }} --release --verbose
 
       - name: Create Release Archive
-        working-directory: code
         run: |
           mkdir -p release
-          cp target/${{ matrix.target }}/release/$BINARY_NAME release/
+          cp code/target/${{ matrix.target }}/release/$BINARY_NAME release/
           tar -czvf ${{ matrix.target }}.tar.gz -C release $BINARY_NAME
 
       - name: Upload Release Assets
-        working-directory: code
         uses: softprops/action-gh-release@v2
         with:
           files: |
