@@ -1,0 +1,38 @@
+name: Build and Release Binary
+
+on:
+  push:
+    tags:
+      - '*' # Trigger on any tag creation
+
+jobs:
+  build:
+    name: Build and Release Rust Binary
+    runs-on: macos-latest
+
+    steps:
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Rust toolchain
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+
+      # Build the Rust binary
+      - name: Build binary
+        run: |
+          cd code
+          cargo build --release
+
+      # Create a GitHub release and upload the binary
+      - name: Create Release and Upload Asset
+        uses: softprops/action-gh-release@v1
+        with:
+          files: code/target/release/organise-file
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
