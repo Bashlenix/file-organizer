@@ -3,7 +3,7 @@ name: Release Statically Linked Rust Binary
 on:
   push:
     tags:
-      - 'v*'
+      - 'v*'  # Trigger on tags like 'v1.0.0'
 
 jobs:
   build:
@@ -11,8 +11,8 @@ jobs:
     strategy:
       matrix:
         target:
-          - x86_64-unknown-linux-musl
-          - aarch64-unknown-linux-musl
+          - x86_64-unknown-linux-musl       # Linux (musl)
+          - aarch64-unknown-linux-musl      # ARM Linux (musl)
           - x86_64-apple-darwin
           - aarch64-apple-darwin
 
@@ -29,18 +29,15 @@ jobs:
       - name: Install Cross
         run: cargo install cross
 
-      - name: Install Target for Cross Compilation
-        run: |
-          rustup target add ${{ matrix.target }}
-
       - name: Build with Cross
         run: |
+          cd code
           cross build --target ${{ matrix.target }} --release --verbose
 
       - name: Create Release Archive
         run: |
           mkdir -p release
-          cp target/${{ matrix.target }}/release/$BINARY_NAME release/
+          cp code/target/${{ matrix.target }}/release/$BINARY_NAME release/
           tar -czvf ${{ matrix.target }}.tar.gz -C release $BINARY_NAME
 
       - name: Upload Release Assets
