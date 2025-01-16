@@ -22,23 +22,22 @@ jobs:
         toolchain: stable  # Specify the Rust toolchain version
         components: rustfmt, clippy  # Optional components for Rust development
 
-    - name: Build the project
+    - name: Install dependencies for cross-compilation
       run: |
-        cd code  # Change to the directory where your Rust program is located
-        cargo build --release  # Build the project
+        sudo apt update
+        sudo apt install -y libssl-dev pkg-config zlib1g-dev
 
-    - name: Set up cross-compilation for macOS (aarch64)
-      uses: cross-rs/cross@v0.3
-      with:
-        target: aarch64-apple-darwin  # Specify the target platform for macOS (Apple Silicon)
-    
+    - name: Add macOS target for cross-compilation
+      run: |
+        rustup target add aarch64-apple-darwin  # Add macOS (Apple Silicon) target
+
     - name: Build the project for macOS
       run: |
         cd code  # Ensure you're in the correct folder
-        cross build --target aarch64-apple-darwin --release --verbose  # Cross-compile for macOS
+        cargo build --target aarch64-apple-darwin --release --verbose  # Cross-compile for macOS
 
     - name: Upload Release Artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3  # Updated to the latest version
       with:
         name: macos-release
         path: code/target/aarch64-apple-darwin/release/  # Path to the compiled release binary
