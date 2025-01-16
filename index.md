@@ -28,7 +28,9 @@ The program:
 
 1. Scans a given directory for files.
 
-2. Categorizes files based on their extensions into predefined categories:
+2. Reads categorization rules from an external <span style="color:red">extensions.json</span> configuration file for maximum flexibility.
+
+3. Categorizes files based on their extensions into predefined categories:
 
     * **Documents:** Includes formats like pdf, doc, docx, txt, xls, xlsx, etc.
 
@@ -38,15 +40,16 @@ The program:
 
     * **Music:** Organizes audio files like mp3, wav, aac, flac, etc.
 
-3. Moves files to corresponding folders named after their categories (e.g., Documents, Images).
+4. Moves unsupported or unrecognized files to an Others folder.
 
-4. Moves unsupported or unrecognized files to an Others folder to ensure no file is left behind.
+5. Creates folders dynamically if they don’t already exist.
 
-5. Optionally processes subdirectories recursively if the user enables the recursive mode using the <span style="color:red">-r</span> flag.
+6. Recursive Organization: When the <span style="color:red">-r</span> or <span style="color:red">--recursive</span> flag is used, it organizes files within subdirectories while preserving the nested folder structure.
+
 
 ## Supported File Types
 
-The program categorizes files into the following groups and supports these extensions:
+The program categorizes files based on the extensions listed in the extensions.json file. Below are some default categories:
 
 | **Category**   | **Supported Extensions**                                                                                                    |
 |-----------------|---------------------------------------------------------------------------------------------------------------------------|
@@ -62,42 +65,72 @@ The program categorizes files into the following groups and supports these exten
 
 1. **Directory Scanning:** The program scans the directory for files using Rust’s filesystem utilities and processes files one by one.
 
-1. **File Categorization:** Each file is checked against predefined extension lists for categorization.
+1. **File Categorization:** Files are categorized based on extensions read from <span style="color:red">extensions.json</span>.
 
 1. **Folder Creation:** If a folder for a specific category (<span style="color:#cccc00">e.g.,</span> Images) doesn’t exist, the program creates it.
 
 1. **File Moving:** The program moves the file into the appropriate folder. If no match is found, the file is placed in an Others folder.
 
-1. **Recursive Option:** If recursive mode is enabled, the program processes files in all subdirectories as well.
+1. **Recursive Option:** When recursive mode is enabled, the program processes all subdirectories while maintaining their structure.
 
 ## Command-Line Interface
 
-The program uses a simple and intuitive command-line interface powered by the clap crate. Users can interact with it as follows:
+The program uses a simple and intuitive command-line interface powered by the <span style="color:red">clap</span> crate. Users can interact with it as follows:
 
 * Organize files in a directory:
  ```rust
-file_organizer ./test
+file_organizer <SOURCE_DIR>
 ```
 
 * Enable recursive processing:
 ```rust
-file_organizer ./test -r
+file_organizer <SOURCE_DIR> -r
 ```
 
-Users can also view the help message for details:
+* View help message:
 ```rust
 file_organizer --help
 ```
 
-## Technical Highlights
+## Example
+Given a directory structure like this:
 
-* **Rust’s Performance:** The program leverages Rust’s performance and safety guarantees for efficient file operations.
+test_main/
+├── document.pdf
+├── image.jpg
+├── sub_dir/
+│   ├── video.mp4
+│   ├── song.mp3
 
-* **Clap for Parsing:** The use of clap::Parser makes the command-line interface intuitive and powerful.
+## Example
+```rust
+file_organizer test_main -r
+```
 
-* **Extensibility:** The program’s modular design allows users to add more categories or file extensions with minimal effort.
+## Example
 
-* **Error Handling:** Includes basic error handling to ensure the program doesn’t crash due to invalid inputs or missing directories.
+test_main/
+├── Documents/
+│   └── document.pdf
+├── Images/
+│   └── image.jpg
+├── sub_dir/
+│   ├── Videos/
+│   │   └── video.mp4
+│   ├── Music/
+│   │   └── song.mp3
+
+## Features
+
+* **Configuration File:** Categorization rules are defined in an external <span style="color:red">extensions.json</span> file, making it easy to customize.
+
+* **Recursive Mode:** Organizes files within nested directories while preserving their structure.
+
+* **Dynamic Folder Creation:** Automatically creates category folders as needed.
+
+* **Error Handling:** Ensures invalid paths or missing configuration files are reported gracefully.
+
+* **Cross-Platform:** Runs efficiently on  macOS, and Linux.
 
 
 ## Potential Use Cases
