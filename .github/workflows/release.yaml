@@ -3,10 +3,10 @@ name: Rust Build and Cross-Compilation
 on:
   push:
     branches:
-      - main  # Or any branch you want to trigger the build from
+      - master  # Or any branch you want to trigger the build from
   pull_request:
     branches:
-      - main  # Trigger on pull requests to the main branch
+      - master  # Trigger on pull requests to the main branch
 
 jobs:
   build:
@@ -36,3 +36,9 @@ jobs:
       run: |
         cd code  # Ensure you're in the correct folder
         cross build --target aarch64-apple-darwin --release --verbose  # Cross-compile for macOS
+
+    - name: Upload Release Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: macos-release
+        path: code/target/aarch64-apple-darwin/release/  # Path to the compiled release binary
