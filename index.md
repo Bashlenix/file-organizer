@@ -95,12 +95,14 @@ file_organizer --help
 ## Example
 Given a directory structure like this:
 
+```
 test_main/
 ├── document.pdf
 ├── image.jpg
 ├── sub_dir/
 │   ├── video.mp4
 │   ├── song.mp3
+```
 
 ## Example
 ```rust
@@ -109,7 +111,7 @@ file_organizer test_main -r
 
 ## Results in:
 
-test_main/
+```test_main/
 ├── Documents/
 │   └── document.pdf
 ├── Images/
@@ -119,7 +121,7 @@ test_main/
 │   │   └── video.mp4
 │   ├── Music/
 │   │   └── song.mp3
-
+```
 
 ## Features
 
