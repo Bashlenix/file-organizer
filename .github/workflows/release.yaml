@@ -25,13 +25,14 @@ jobs:
     - name: Install dependencies for cross-compilation
       run: |
         sudo apt update
-        sudo apt install -y libssl-dev pkg-config zlib1g-dev build-essential curl
+        sudo apt install -y libssl-dev pkg-config zlib1g-dev build-essential curl git
 
-    - name: Install osxcross
+    - name: Clone osxcross repository
       run: |
-        curl -LO https://github.com/tpoechtrager/osxcross/releases/download/v0.1/osxcross-x86_64-linux-gnu.tar.gz
-        tar -xvf osxcross-x86_64-linux-gnu.tar.gz
-        export PATH=$PATH:$PWD/osxcross-x86_64-linux-gnu/bin
+        git clone https://github.com/tpoechtrager/osxcross.git
+        cd osxcross
+        ./tools/get_dependencies.sh  # Install dependencies
+        make
 
     - name: Set up macOS target
       run: |
