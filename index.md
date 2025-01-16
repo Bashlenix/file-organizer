@@ -111,7 +111,8 @@ file_organizer test_main -r
 
 ## Results in:
 
-```test_main/
+```
+test_main/
 ├── Documents/
 │   └── document.pdf
 ├── Images/
