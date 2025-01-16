@@ -18,25 +18,13 @@
     <header class="page-header" role="banner">
       <h1 class="project-name">{{ site.title | default: site.github.repository_name }}</h1>
       <h2 class="project-tagline">{{ site.description | default: site.github.project_tagline }}</h2>
-      <!-- {% if site.github.is_project_page %}
-        <a target="_blank" href="https://github.com/Bashlenix/file-organizer/tree/master/code" class="btn">View on GitHub</a>
-      {% endif %}
-      {% if site.show_downloads %}
-        <!-- <a target="_blank" href="https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/Bashlenix/file-organizer/tree/master/code" class="btn">Download .zip</a> -->
-        <!-- <a href="{{ github.tar_url }}" class="btn">Download .tar.gz</a> -->
-      <!-- {% endif %} --> 
+
       {% if site.github.is_project_page %}
-        {% unless site.buttons.github_hide %}
-        <a target="_blank" href="https://github.com/Bashlenix/file-organizer/tree/master/code" class="btn">View on GitHub</a>
-        {% endunless %}
+      <a target="_blank" href="https://github.com/Bashlenix/file-organizer/tree/master/code" class="btn">View on GitHub</a>
       {% endif %}
       {% if site.show_downloads %}
-        {% unless site.buttons.zip_hide %}
-          <a href="{{ site.buttons.zip_url | default: site.github.zip_url }}" class="btn">{{ site.buttons.zip_title | default: "Download .zip" }}</a>
-        {% endunless %}
-        {% unless site.buttons.tar_hide %}
-          <a href="{{ site.buttons.tar_url | default: site.github.tar_url }}" class="btn">{{ site.buttons.tar_title | default: "Download .tar.gz" }}</a>
-        {% endunless %}
+        <a href="https://github.com/Bashlenix/file-organizer/archive/refs/tags/v1.0.1.zip" class="btn">Download .zip</a>
+        <a href="https://github.com/Bashlenix/file-organizer/archive/refs/tags/v1.0.1.tar.gz" class="btn">Download .tar.gz</a>
       {% endif %}
     </header>
 

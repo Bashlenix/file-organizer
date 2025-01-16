@@ -3,11 +3,3 @@ description: Making chaos a thing of the past!
 show_downloads: true
 google_analytics:
 theme: jekyll-theme-cayman
-
-
-buttons:
-  zip_url: https://github.com/tuur29/pages-themes-cayman
-  zip_title: View on Github
-  zip_hide: false
-  tar_hide: true
-  github_hide: true
