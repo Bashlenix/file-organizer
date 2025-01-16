@@ -33,9 +33,12 @@ jobs:
         run: |
           rustup target add ${{ matrix.target }}
 
+      
       - name: Build with Cross
-        run: cd code
-        cross build --target ${{ matrix.target }} --release --verbose
+        run: |
+          cd code
+          cross build --target ${{ matrix.target }} --release --verbose
+
 
       - name: Create Release Archive
         run: |
