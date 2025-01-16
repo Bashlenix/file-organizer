@@ -107,7 +107,7 @@ test_main/
 file_organizer test_main -r
 ```
 
-## Example
+## Results in:
 
 test_main/
 ├── Documents/
@@ -119,6 +119,7 @@ test_main/
 │   │   └── video.mp4
 │   ├── Music/
 │   │   └── song.mp3
+
 
 ## Features
 
