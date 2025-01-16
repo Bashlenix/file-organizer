@@ -13,8 +13,6 @@ jobs:
         target:
           - x86_64-unknown-linux-musl       # Linux (musl)
           - aarch64-unknown-linux-musl      # ARM Linux (musl)
-          - x86_64-apple-darwin
-          - aarch64-apple-darwin
 
     env:
       BINARY_NAME: file_organizer
