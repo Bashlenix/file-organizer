@@ -31,7 +31,7 @@ jobs:
       run: |
         git clone https://github.com/tpoechtrager/osxcross.git
         cd osxcross
-        ./tools/get_dependencies.sh  # Install dependencies
+        sudo ./tools/get_dependencies.sh  # Install dependencies with sudo
         make
 
     - name: Set up macOS target
