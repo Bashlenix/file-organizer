@@ -1,55 +1,38 @@
-name: Release Statically Linked Rust Binary
+name: Rust Build and Cross-Compilation
 
 on:
   push:
-    tags:
-      - 'v*'  # Trigger on tags like 'v1.0.0'
+    branches:
+      - main  # Or any branch you want to trigger the build from
+  pull_request:
+    branches:
+      - main  # Trigger on pull requests to the main branch
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        target:
-          - x86_64-unknown-linux-musl
-          - aarch64-unknown-linux-musl
-          - x86_64-apple-darwin
-          - aarch64-apple-darwin
-
-    env:
-      BINARY_NAME: file_organizer
+    runs-on: ubuntu-latest  # GitHub Actions default runner (Ubuntu Linux)
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
+    - name: Set up Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable  # Specify the Rust toolchain version
+        components: rustfmt, clippy  # Optional components for Rust development
 
-      - name: Install Cross
-        run: cargo install cross
+    - name: Build the project
+      run: |
+        cd code  # Change to the directory where your Rust program is located
+        cargo build --release  # Build the project
 
-      - name: Install Target for Cross Compilation
-        run: |
-          rustup target add ${{ matrix.target }}
-
-      
-      - name: Build with Cross
-        run: |
-          cd code
-          cross build --target ${{ matrix.target }} --release --verbose
-
-
-      - name: Create Release Archive
-        run: |
-          mkdir -p release
-          cp code/target/${{ matrix.target }}/release/$BINARY_NAME release/
-          tar -czvf ${{ matrix.target }}.tar.gz -C release $BINARY_NAME
-
-      - name: Upload Release Assets
-        uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            *.tar.gz
-        env:
-          GITHUB_TOKEN: ${{ secrets.BASHI }}
+    - name: Set up cross-compilation for macOS (aarch64)
+      uses: cross-rs/cross@v0.2
+      with:
+        target: aarch64-apple-darwin  # Specify the target platform for macOS (Apple Silicon)
+    
+    - name: Build the project for macOS
+      run: |
+        cd code  # Ensure you're in the correct folder
+        cross build --target aarch64-apple-darwin --release --verbose  # Cross-compile for macOS
