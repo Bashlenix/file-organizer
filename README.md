@@ -2,11 +2,6 @@
 layout: default
 ---
 
----
-layout: default
----
-
-
 # Problem the Program Solves
 
 In today's digital age, files can accumulate quickly, creating cluttered directories that are difficult to manage. Users often store documents, images, music, and videos in a single folder without organization. Over time, this can lead to frustration when searching for specific files or when maintaining a clean workspace.
@@ -33,7 +28,7 @@ The program:
 
 1. Scans a given directory for files.
 
-2. Reads categorization rules from an external <a  href= "https://drive.usercontent.google.com/uc?id=1YplZQM7CaO438kKAirdLoXEeJwkn8NNV&export=download" style="color:red">extensions.json</a> configuration file for maximum flexibility. <i>The <strong><u>extensions.json</u> file must be located in the same folder as the executable file.</strong></i>
+2. Reads categorization rules from an external <a  href= "https://drive.usercontent.google.com/uc?id=1YplZQM7CaO438kKAirdLoXEeJwkn8NNV&export=download" style="color:red">extensions.json</a> configuration file for maximum flexibility. <i> <strong>The<u>extensions.json</u> file must be located in the same folder as the executable file.</strong></i>
 
 3. Categorizes files based on their extensions into predefined categories:
 
