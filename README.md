@@ -28,7 +28,7 @@ The program:
 
 1. Scans a given directory for files.
 
-2. Reads categorization rules from an external <a  href= "https://drive.usercontent.google.com/uc?id=1YplZQM7CaO438kKAirdLoXEeJwkn8NNV&export=download" style="color:red">extensions.json</a> configuration file for maximum flexibility.<i><strong>The<u> extensions.json</u> file must be located in the same folder as the executable file.</i></strong></i>
+2. Reads categorization rules from an external <a  href= "https://drive.usercontent.google.com/uc?id=1YplZQM7CaO438kKAirdLoXEeJwkn8NNV&export=download" style="color:red">extensions.json</a> configuration file for maximum flexibility.<i><strong>The<u> extensions.json</u> file must be located in the same folder as the executable file.</strong></i>
 
 3. Categorizes files based on their extensions into predefined categories:
 
@@ -65,7 +65,7 @@ The program categorizes files based on the extensions listed in the <a  href= "h
 
 1. **Directory Scanning:** The program scans the directory for files using Rust’s filesystem utilities and processes files one by one.
 
-1. **File Categorization:** Files are categorized based on extensions read from <a  href= "https://drive.usercontent.google.com/uc?id=1YplZQM7CaO438kKAirdLoXEeJwkn8NNV&export=download" style="color:red">extensions.json</a>. <i><strong>The<u> extensions.json</u> file must be located in the same folder as the executable file.</i></strong></i>
+1. **File Categorization:** Files are categorized based on extensions read from <a  href= "https://drive.usercontent.google.com/uc?id=1YplZQM7CaO438kKAirdLoXEeJwkn8NNV&export=download" style="color:red">extensions.json</a>. <i><strong>The<u> extensions.json</u> file must be located in the same folder as the executable file.</strong></i>
 
 1. **Folder Creation:** If a folder for a specific category (<span style="color:#cccc00">e.g.,</span> Images) doesn’t exist, the program creates it.
 
