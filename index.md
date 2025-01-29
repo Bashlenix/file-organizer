@@ -126,7 +126,7 @@ test_main/
 
 ## Features
 
-* **Configuration File:** Categorization rules are defined in an external <span style="color:red">extensions.json</span> file, making it easy to customize.
+* **Configuration File:** Categorization rules are defined in an external  <a  href= "https://drive.usercontent.google.com/uc?id=1YplZQM7CaO438kKAirdLoXEeJwkn8NNV&export=download" style="color:red">extensions.json</a> file, making it easy to customize.
 
 * **Recursive Mode:** Organizes files within nested directories while preserving their structure.
 
