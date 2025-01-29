@@ -28,7 +28,7 @@ The program:
 
 1. Scans a given directory for files.
 
-2. Reads categorization rules from an external <a  href= "https://github.com/Bashlenix/file-organizer/raw/master/code/extensions.json" download="extensions.json" style="color:red">extensions.json</a> configuration file for maximum flexibility. <strong>The extensions.json file must be located in the same folder as the executable file.</strong>
+2. Reads categorization rules from an external <a  href= "https://github.com/Bashlenix/file-organizer/blob/master/code/extensions.json.zip" style="color:red">extensions.json</a> configuration file for maximum flexibility. <strong>The extensions.json file must be located in the same folder as the executable file.</strong>
 
 3. Categorizes files based on their extensions into predefined categories:
 
@@ -49,7 +49,7 @@ The program:
 
 ## Supported File Types
 
-The program categorizes files based on the extensions listed in the <a  href= "https://github.com/Bashlenix/file-organizer/raw/master/code/extensions.json" download="extensions.json" style="color:red">extensions.json</a> file. Below are some default categories:
+The program categorizes files based on the extensions listed in the <a  href= "https://github.com/Bashlenix/file-organizer/blob/master/code/extensions.json.zip" style="color:red">extensions.json</a> file. Below are some default categories:
 
 | **Category**   | **Supported Extensions**                                                                                                    |
 |-----------------|---------------------------------------------------------------------------------------------------------------------------|
