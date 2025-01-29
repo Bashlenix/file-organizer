@@ -1,49 +1,55 @@
-name: Release Statically Linked Rust Binary
+name: MacOS & Linux Release
 
 on:
   push:
     tags:
-      - 'v*'  # Trigger on tags like 'v1.0.0'
+      - 'v*'  # Runs when a tag like v1.0.0 is pushed
+
+permissions:
+  contents: write  # Allows creating GitHub releases
 
 jobs:
   build:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
         target:
-          - x86_64-unknown-linux-musl       # Linux (musl)
-          - aarch64-unknown-linux-musl      # ARM Linux (musl)
+          - x86_64-apple-darwin       # ✅ macOS
+          - x86_64-unknown-linux-gnu  # ✅ Linux
 
-
+    runs-on: ${{ matrix.target == 'x86_64-apple-darwin' && 'macos-latest' || 'ubuntu-latest' }}
 
     env:
-      BINARY_NAME: file_organizer
+      BINARY_NAME: smart_file_analyzer  # Your project's binary name
 
     steps:
-      - name: Checkout code
+      - name: 📥 Checkout Code
         uses: actions/checkout@v4
 
-      - name: Install Rust
+      - name: 🦀 Install Rust
         uses: dtolnay/rust-toolchain@stable
 
-      - name: Install Cross
-        run: cargo install cross
+      - name: ⚙️ Install Required Rust Targets
+        run: rustup target add ${{ matrix.target }}
 
-      - name: Build with Cross
-        run: |
-          cd code
-          cross build --target ${{ matrix.target }} --release --verbose
+      - name: 🏗️ Build Rust Binary
+        run: cargo build --release --target ${{ matrix.target }}
+        working-directory: code  # ✅ Updated to use the correct folder
 
-      - name: Create Release Archive
+      - name: 📦 Package Binary
         run: |
           mkdir -p release
-          cp code/target/${{ matrix.target }}/release/$BINARY_NAME release/
-          tar -czvf ${{ matrix.target }}.tar.gz -C release $BINARY_NAME
+          if [[ "${{ matrix.target }}" == "linux" ]]; then
+            cp code/target/${{ matrix.target }}/release/$BINARY_NAME release/
+            tar -czvf $BINARY_NAME-linux.tar.gz -C release $BINARY_NAME
+          elif [[ "${{ matrix.target }}" == "darwin" ]]; then
+            cp code/target/${{ matrix.target }}/release/$BINARY_NAME release/
+            tar -czvf $BINARY_NAME-macos.tar.gz -C release $BINARY_NAME
+          fi
 
-      - name: Upload Release Assets
+      - name: 🚀 Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
             *.tar.gz
         env:
-          GITHUB_TOKEN: ${{ secrets.BASHI }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
