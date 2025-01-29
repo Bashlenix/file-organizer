@@ -19,7 +19,7 @@ jobs:
     runs-on: ${{ matrix.target == 'x86_64-apple-darwin' && 'macos-latest' || 'ubuntu-latest' }}
 
     env:
-      BINARY_NAME: file_organizer  # Your project's binary name
+      BINARY_NAME: file_organizer  # ✅ Your actual binary name
 
     steps:
       - name: 📥 Checkout Code
@@ -30,10 +30,11 @@ jobs:
 
       - name: ⚙️ Install Required Rust Targets
         run: rustup target add ${{ matrix.target }}
+        working-directory: code  # ✅ Set working directory
 
       - name: 🏗️ Build Rust Binary
-        working-directory: code  # ✅ Updated to use the correct folder
         run: cargo build --release --target ${{ matrix.target }}
+        working-directory: code  # ✅ Set working directory
 
       - name: 📦 Package Binary
         run: |
@@ -52,4 +53,4 @@ jobs:
           files: |
             *.tar.gz
         env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
